@@ -2,9 +2,12 @@ package mr
 
 import "fmt"
 import "log"
+import "os"
+import "io/ioutil"
 import "net/rpc"
 import "hash/fnv"
-
+import "time"
+import "sort"
 
 //
 // Map functions return a slice of KeyValue.
@@ -13,6 +16,13 @@ type KeyValue struct {
 	Key   string
 	Value string
 }
+
+type ByKey []KeyValue
+
+// for sorting by key.
+func (a ByKey) Len() int           { return len(a) }
+func (a ByKey) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByKey) Less(i, j int) bool { return a[i].Key < a[j].Key }
 
 //
 // use ihash(key) % NReduce to choose the reduce
@@ -24,15 +34,125 @@ func ihash(key string) int {
 	return int(h.Sum32() & 0x7fffffff)
 }
 
-
+func PathExists(path string) bool {
+	_, err := os.Stat(path)
+	if err == nil {
+		return true
+	}
+	if os.IsNotExist(err) {
+		return false
+	}
+	return false
+}
 //
 // main/mrworker.go calls this function.
 //
 func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
+	// fmt.Printf("worker start!\n")
 
 	// Your worker implementation here.
+	for {
+		request := RequestTaskArgs{}
+		reply := RequestTaskReply{}
+		call("Coordinator.RequestTask", &request, &reply)
+		// fmt.Printf("worker get task %v of type %v\n", reply.TaskID, reply.TaskType)
+		if reply.TaskType == 2 {
+			time.Sleep(time.Second)
+		} else if reply.TaskType == 3 { // no more work
+			return
+		} else if reply.TaskType == 0 {
+			filename := reply.Filename
+			// fmt.Printf("filename %v\n", filename)
+			file, err := os.Open(filename)
+			if err != nil {
+				log.Fatalf("cannot open %v", filename)
+			}
+			content, err := ioutil.ReadAll(file)
+			// fmt.Println(string(content))
+			if err != nil {
+				log.Fatalf("cannot read %v", filename)
+			}
+			file.Close()
+			kva := mapf(filename, string(content))
+			for _, kv := range kva {
+				keyID := ihash(kv.Key) % reply.NReduce
+				midFileName := fmt.Sprintf("mid-%v-%v", reply.TaskID, keyID)
+				midFile, err := os.OpenFile(midFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+				if err != nil {
+					log.Fatalf("cannot open %v", midFileName)
+				}
+				// fmt.Println(kv.Key, kv.Value)
+				fmt.Fprintf(midFile, "%v %v\n", kv.Key, kv.Value)
+				midFile.Close()
+			}
 
+			report := ReportTaskArgs{
+				TaskType: reply.TaskType,
+				TaskID: reply.TaskID,
+			}
+			call("Coordinator.ReportTask", &report, &ReportTaskReply{})
+		} else if reply.TaskType == 1 {
+			intermediate := []KeyValue{}
+			for mapID := 0; mapID < reply.NMap; mapID++ {
+				midFileName := fmt.Sprintf("mid-%v-%v", mapID, reply.TaskID)
+				midFile, err := os.OpenFile(midFileName, os.O_RDONLY, 0644)
+				if err != nil {
+					log.Fatalf("cannot read %v", midFileName)
+				}
+				var key string
+				var value string
+
+				for ;; {
+					_, err := fmt.Fscanf(midFile, "%s %s\n", &key, &value)
+					if err != nil {
+						break
+					}
+					intermediate = append(intermediate, KeyValue{key, value})
+				}
+				
+				// fmt.Println(key, value)
+				intermediate = append(intermediate, KeyValue{key, value})
+			}
+			sort.Sort(ByKey(intermediate))
+
+			oname := fmt.Sprintf("mr-out-%v", reply.TaskID)
+			// fmt.Println(oname)
+			// fmt.Println(intermediate)
+			ofile, _ := os.Create(oname)
+
+			//
+			// call Reduce on each distinct key in intermediate[],
+			// and print the result to mr-out-0.
+			//
+			i := 0
+			for i < len(intermediate) {
+				j := i + 1
+				for j < len(intermediate) && intermediate[j].Key == intermediate[i].Key {
+					j++
+				}
+				values := []string{}
+				for k := i; k < j; k++ {
+					values = append(values, intermediate[k].Value)
+				}
+				output := reducef(intermediate[i].Key, values)
+
+				// this is the correct format for each line of Reduce output.
+				fmt.Fprintf(ofile, "%v %v\n", intermediate[i].Key, output)
+				i = j
+			}
+
+			ofile.Close()
+
+			report := ReportTaskArgs{
+				TaskType: reply.TaskType,
+				TaskID: reply.TaskID,
+			}
+			call("Coordinator.ReportTask", &report, &ReportTaskReply{})
+		} else {
+			log.Fatalf("unknown task type %v", reply.TaskType)
+		}
+	}
 	// uncomment to send the Example RPC to the coordinator.
 	// CallExample()
 
@@ -49,7 +169,7 @@ func CallExample() {
 	args := ExampleArgs{}
 
 	// fill in the argument(s).
-	args.X = 99
+	args.X = 1
 
 	// declare a reply structure.
 	reply := ExampleReply{}
