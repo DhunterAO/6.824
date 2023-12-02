@@ -24,7 +24,7 @@ type ExampleReply struct {
 
 // Add your RPC definitions here.
 type RequestTaskArgs struct {
-
+	ServerID int
 }
 
 type RequestTaskReply struct {
@@ -36,14 +36,31 @@ type RequestTaskReply struct {
 }
 
 type ReportTaskArgs struct {
+	ServerID int
 	TaskType uint8
 	TaskID uint
 	Output string
 }
 
 type ReportTaskReply struct {
+	ServerID int
 	TaskType uint8
 	TaskID uint
+}
+
+type RegisterServerArgs struct {
+}
+
+type RegisterServerReply struct {
+	ServerID int
+}
+
+type HeartbeatArgs struct {
+	ServerID int
+}
+
+type HeartbeatReply struct {
+	Status ServerStatus
 }
 
 // Cook up a unique-ish UNIX-domain socket name

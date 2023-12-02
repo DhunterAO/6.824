@@ -8,7 +8,7 @@ import "net/rpc"
 import "hash/fnv"
 import "time"
 import "sort"
-
+import "encoding/json"
 //
 // Map functions return a slice of KeyValue.
 //
@@ -49,102 +49,118 @@ func PathExists(path string) bool {
 //
 func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
-	// fmt.Printf("worker start!\n")
 
+	reply := RegisterServerReply{}
+	call("Coordinator.RegisterServer", &RegisterServerArgs{}, &reply)
+	serverID := reply.ServerID
 	// Your worker implementation here.
+	go func() {
+		for {
+			time.Sleep(time.Second)
+			heartbeatReply := HeartbeatReply{}
+			call("Coordinator.Heartbeat", &HeartbeatArgs{ServerID: serverID}, &heartbeatReply)
+		}
+	}()
+
 	for {
-		request := RequestTaskArgs{}
+		request := RequestTaskArgs{
+			ServerID: serverID,
+		}
 		reply := RequestTaskReply{}
 		call("Coordinator.RequestTask", &request, &reply)
-		// fmt.Printf("worker get task %v of type %v\n", reply.TaskID, reply.TaskType)
 		if reply.TaskType == 2 {
-			time.Sleep(time.Second)
+			continue
 		} else if reply.TaskType == 3 { // no more work
 			return
 		} else if reply.TaskType == 0 {
 			filename := reply.Filename
-			// fmt.Printf("filename %v\n", filename)
 			file, err := os.Open(filename)
 			if err != nil {
 				log.Fatalf("cannot open %v", filename)
 			}
 			content, err := ioutil.ReadAll(file)
-			// fmt.Println(string(content))
 			if err != nil {
 				log.Fatalf("cannot read %v", filename)
 			}
 			file.Close()
+
 			kva := mapf(filename, string(content))
 			for _, kv := range kva {
 				keyID := ihash(kv.Key) % reply.NReduce
-				midFileName := fmt.Sprintf("mid-%v-%v", reply.TaskID, keyID)
-				midFile, err := os.OpenFile(midFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+				tempFileName := fmt.Sprintf("mr-mid-%d-%v-%v", serverID, reply.TaskID, keyID)
+				tempFile, err := os.OpenFile(tempFileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 				if err != nil {
-					log.Fatalf("cannot open %v", midFileName)
+					log.Fatalf("cannot open %v", tempFileName)
 				}
-				// fmt.Println(kv.Key, kv.Value)
-				fmt.Fprintf(midFile, "%v %v\n", kv.Key, kv.Value)
-				midFile.Close()
+				enc := json.NewEncoder(tempFile)
+				enc.Encode(&kv)
+				tempFile.Close()
+			}
+
+			for keyID := 0; keyID < reply.NReduce; keyID++ {
+				tempFileName := fmt.Sprintf("mr-mid-%d-%v-%v", serverID, reply.TaskID, keyID)
+				midFileName := fmt.Sprintf("mr-mid-%v-%v", reply.TaskID, keyID)
+				os.Rename(tempFileName, midFileName)
 			}
 
 			report := ReportTaskArgs{
+				ServerID: serverID,
 				TaskType: reply.TaskType,
 				TaskID: reply.TaskID,
 			}
 			call("Coordinator.ReportTask", &report, &ReportTaskReply{})
 		} else if reply.TaskType == 1 {
-			intermediate := []KeyValue{}
+			kva := []KeyValue{}
 			for mapID := 0; mapID < reply.NMap; mapID++ {
-				midFileName := fmt.Sprintf("mid-%v-%v", mapID, reply.TaskID)
+				midFileName := fmt.Sprintf("mr-mid-%v-%v", mapID, reply.TaskID)
 				midFile, err := os.OpenFile(midFileName, os.O_RDONLY, 0644)
+				defer midFile.Close()
 				if err != nil {
-					log.Fatalf("cannot read %v", midFileName)
+					continue
 				}
-				var key string
-				var value string
 
-				for ;; {
-					_, err := fmt.Fscanf(midFile, "%s %s\n", &key, &value)
-					if err != nil {
-						break
+				dec := json.NewDecoder(midFile)
+				for {
+					var kv KeyValue
+					if err := dec.Decode(&kv); err != nil {
+					  break
 					}
-					intermediate = append(intermediate, KeyValue{key, value})
+					kva = append(kva, kv)
 				}
-				
-				// fmt.Println(key, value)
-				intermediate = append(intermediate, KeyValue{key, value})
 			}
-			sort.Sort(ByKey(intermediate))
+			sort.Sort(ByKey(kva))
 
 			oname := fmt.Sprintf("mr-out-%v", reply.TaskID)
-			// fmt.Println(oname)
-			// fmt.Println(intermediate)
-			ofile, _ := os.Create(oname)
+			tempFile, err := ioutil.TempFile(".", oname)
+			if err != nil {
+				log.Fatalf("cannot open %v", oname)
+			}
 
 			//
 			// call Reduce on each distinct key in intermediate[],
 			// and print the result to mr-out-0.
 			//
 			i := 0
-			for i < len(intermediate) {
+			for i < len(kva) {
 				j := i + 1
-				for j < len(intermediate) && intermediate[j].Key == intermediate[i].Key {
+				for j < len(kva) && kva[j].Key == kva[i].Key {
 					j++
 				}
 				values := []string{}
 				for k := i; k < j; k++ {
-					values = append(values, intermediate[k].Value)
+					values = append(values, kva[k].Value)
 				}
-				output := reducef(intermediate[i].Key, values)
+				output := reducef(kva[i].Key, values)
 
-				// this is the correct format for each line of Reduce output.
-				fmt.Fprintf(ofile, "%v %v\n", intermediate[i].Key, output)
+				fmt.Fprintf(tempFile, "%v %v\n", kva[i].Key, output)
 				i = j
 			}
-
-			ofile.Close()
+			tempname := tempFile.Name()
+			tempFile.Close()
+			os.Rename(tempname, oname)
 
 			report := ReportTaskArgs{
+				ServerID: serverID,
 				TaskType: reply.TaskType,
 				TaskID: reply.TaskID,
 			}

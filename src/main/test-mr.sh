@@ -5,7 +5,7 @@
 #
 
 # un-comment this to run the tests with the Go race detector.
-# RACE=-race
+RACE=-race
 
 if [[ "$OSTYPE" = "darwin"* ]]
 then
@@ -60,20 +60,58 @@ rm -f mr-*
 # make sure software is freshly built.
 (cd ../../mrapps && go clean)
 (cd .. && go clean)
+(cd ../../mrapps && go build $RACE -buildmode=plugin grep.go) || exit 1
 (cd ../../mrapps && go build $RACE -buildmode=plugin wc.go) || exit 1
-# (cd ../../mrapps && go build $RACE -buildmode=plugin indexer.go) || exit 1
-# (cd ../../mrapps && go build $RACE -buildmode=plugin mtiming.go) || exit 1
-# (cd ../../mrapps && go build $RACE -buildmode=plugin rtiming.go) || exit 1
-# (cd ../../mrapps && go build $RACE -buildmode=plugin jobcount.go) || exit 1
-# (cd ../../mrapps && go build $RACE -buildmode=plugin early_exit.go) || exit 1
-# (cd ../../mrapps && go build $RACE -buildmode=plugin crash.go) || exit 1
-# (cd ../../mrapps && go build $RACE -buildmode=plugin nocrash.go) || exit 1
+(cd ../../mrapps && go build $RACE -buildmode=plugin indexer.go) || exit 1
+(cd ../../mrapps && go build $RACE -buildmode=plugin mtiming.go) || exit 1
+(cd ../../mrapps && go build $RACE -buildmode=plugin rtiming.go) || exit 1
+(cd ../../mrapps && go build $RACE -buildmode=plugin jobcount.go) || exit 1
+(cd ../../mrapps && go build $RACE -buildmode=plugin early_exit.go) || exit 1
+(cd ../../mrapps && go build $RACE -buildmode=plugin crash.go) || exit 1
+(cd ../../mrapps && go build $RACE -buildmode=plugin nocrash.go) || exit 1
 (cd .. && go build $RACE mrcoordinator.go) || exit 1
 (cd .. && go build $RACE mrworker.go) || exit 1
 (cd .. && go build $RACE mrsequential.go) || exit 1
 
 failed_any=0
 
+#########################################################
+# customized grep
+# generate the correct output
+../mrsequential ../../mrapps/grep.so ../pg*txt || exit 1
+sort mr-out-0 > mr-correct-grep.txt
+rm -f mr-out*
+
+echo '***' Starting grep test.
+
+maybe_quiet $TIMEOUT ../mrcoordinator ../pg*txt &
+pid=$!
+
+# give the coordinator time to create the sockets.
+sleep 1
+
+# start multiple workers.
+(maybe_quiet $TIMEOUT ../mrworker ../../mrapps/grep.so) &
+(maybe_quiet $TIMEOUT ../mrworker ../../mrapps/grep.so) &
+(maybe_quiet $TIMEOUT ../mrworker ../../mrapps/grep.so) &
+
+# wait for the coordinator to exit.
+wait $pid
+
+# since workers are required to exit when a job is completely finished,
+# and not before, that means the job has finished.
+sort mr-out* | grep . > mr-grep-all
+if cmp mr-grep-all mr-correct-grep.txt
+then
+  echo '---' grep test: PASS
+else
+  echo '---' grep output is not the same as mr-correct-grep.txt
+  echo '---' grep test: FAIL
+  failed_any=1
+fi
+
+# wait for remaining workers and coordinator to exit.
+wait
 #########################################################
 # first word-count
 
@@ -112,7 +150,6 @@ fi
 
 # wait for remaining workers and coordinator to exit.
 wait
-exit 0
 #########################################################
 # now indexer
 rm -f mr-*
@@ -172,7 +209,6 @@ else
 fi
 
 wait
-
 
 #########################################################
 echo '***' Starting reduce parallelism test.
@@ -245,18 +281,18 @@ sleep 1
 # `jobs` ensures that any completed old processes from other tests
 # are not waited upon.
 jobs &> /dev/null
-if [[ "$OSTYPE" = "darwin"* ]]
-then
+# if [[ "$OSTYPE" = "darwin"* ]]
+# then
   # bash on the Mac doesn't have wait -n
-  while [ ! -e $DF ]
-  do
-    sleep 0.2
-  done
-else
-  # the -n causes wait to wait for just one child process,
-  # rather than waiting for all to finish.
-  wait -n
-fi
+while [ ! -e $DF ]
+do
+  sleep 0.2
+done
+# else
+#   # the -n causes wait to wait for just one child process,
+#   # rather than waiting for all to finish.
+#   wait -n
+# fi
 
 rm -f $DF
 
