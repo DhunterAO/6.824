@@ -9,9 +9,8 @@ import "hash/fnv"
 import "time"
 import "sort"
 import "encoding/json"
-//
+
 // Map functions return a slice of KeyValue.
-//
 type KeyValue struct {
 	Key   string
 	Value string
@@ -24,10 +23,8 @@ func (a ByKey) Len() int           { return len(a) }
 func (a ByKey) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByKey) Less(i, j int) bool { return a[i].Key < a[j].Key }
 
-//
 // use ihash(key) % NReduce to choose the reduce
 // task number for each KeyValue emitted by Map.
-//
 func ihash(key string) int {
 	h := fnv.New32a()
 	h.Write([]byte(key))
@@ -44,9 +41,8 @@ func PathExists(path string) bool {
 	}
 	return false
 }
-//
+
 // main/mrworker.go calls this function.
-//
 func Worker(mapf func(string, string) []KeyValue,
 	reducef func(string, []string) string) {
 
@@ -106,7 +102,7 @@ func Worker(mapf func(string, string) []KeyValue,
 			report := ReportTaskArgs{
 				ServerID: serverID,
 				TaskType: reply.TaskType,
-				TaskID: reply.TaskID,
+				TaskID:   reply.TaskID,
 			}
 			call("Coordinator.ReportTask", &report, &ReportTaskReply{})
 		} else if reply.TaskType == 1 {
@@ -123,7 +119,7 @@ func Worker(mapf func(string, string) []KeyValue,
 				for {
 					var kv KeyValue
 					if err := dec.Decode(&kv); err != nil {
-					  break
+						break
 					}
 					kva = append(kva, kv)
 				}
@@ -162,7 +158,7 @@ func Worker(mapf func(string, string) []KeyValue,
 			report := ReportTaskArgs{
 				ServerID: serverID,
 				TaskType: reply.TaskType,
-				TaskID: reply.TaskID,
+				TaskID:   reply.TaskID,
 			}
 			call("Coordinator.ReportTask", &report, &ReportTaskReply{})
 		} else {
@@ -174,11 +170,9 @@ func Worker(mapf func(string, string) []KeyValue,
 
 }
 
-//
 // example function to show how to make an RPC call to the coordinator.
 //
 // the RPC argument and reply types are defined in rpc.go.
-//
 func CallExample() {
 
 	// declare an argument structure.
@@ -203,11 +197,9 @@ func CallExample() {
 	}
 }
 
-//
 // send an RPC request to the coordinator, wait for the response.
 // usually returns true.
 // returns false if something goes wrong.
-//
 func call(rpcname string, args interface{}, reply interface{}) bool {
 	// c, err := rpc.DialHTTP("tcp", "127.0.0.1"+":1234")
 	sockname := coordinatorSock()

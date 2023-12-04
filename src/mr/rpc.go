@@ -29,23 +29,23 @@ type RequestTaskArgs struct {
 
 type RequestTaskReply struct {
 	TaskType uint8
-	TaskID uint
-	NMap int
-	NReduce int
+	TaskID   uint
+	NMap     int
+	NReduce  int
 	Filename string
 }
 
 type ReportTaskArgs struct {
 	ServerID int
 	TaskType uint8
-	TaskID uint
-	Output string
+	TaskID   uint
+	Output   string
 }
 
 type ReportTaskReply struct {
 	ServerID int
 	TaskType uint8
-	TaskID uint
+	TaskID   uint
 }
 
 type RegisterServerArgs struct {

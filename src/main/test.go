@@ -11,7 +11,7 @@ type Fetcher interface {
 }
 
 type UrlsWithDepth struct {
-	urls []string
+	urls  []string
 	depth int
 }
 
@@ -37,7 +37,7 @@ func coordinator(ch chan UrlsWithDepth, fetcher Fetcher) {
 				if fetched[u] == false {
 					// fetched[u] = true
 					n += 1
-					go worker(u, depth - 1, ch, fetcher)
+					go worker(u, depth-1, ch, fetcher)
 				}
 			}
 		}

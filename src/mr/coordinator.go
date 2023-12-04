@@ -6,10 +6,12 @@ import "os"
 import "net/rpc"
 import "net/http"
 import "time"
+
 // import "fmt"
 import "sync"
 
 type TaskStatus uint8
+
 const (
 	Idle TaskStatus = iota
 	InProcess
@@ -25,7 +27,7 @@ const (
 )
 
 type Task struct {
-	status TaskStatus
+	status   TaskStatus
 	serverID int
 }
 
@@ -39,18 +41,18 @@ type ReduceTask struct {
 }
 
 type Server struct {
-	serverID int
-	taskID int
-	taskType int
-	status ServerStatus
+	serverID      int
+	taskID        int
+	taskType      int
+	status        ServerStatus
 	lastHeartbeat int64
 }
 
 type Coordinator struct {
-	phase uint8
-	mapTasks []MapTask
+	phase       uint8
+	mapTasks    []MapTask
 	reduceTasks []ReduceTask
-	servers []Server
+	servers     []Server
 
 	mu sync.Mutex
 }
@@ -60,10 +62,10 @@ func (c *Coordinator) RegisterServer(args *RegisterServerArgs, reply *RegisterSe
 	defer c.mu.Unlock()
 	serverID := len(c.servers)
 	server := Server{
-		serverID: serverID,
-		taskID: 0,
-		taskType: 0,
-		status: NoTask,
+		serverID:      serverID,
+		taskID:        0,
+		taskType:      0,
+		status:        NoTask,
 		lastHeartbeat: time.Now().Unix(),
 	}
 	c.servers = append(c.servers, server)
@@ -159,20 +161,15 @@ func (c *Coordinator) ReportTask(args *ReportTaskArgs, reply *ReportTaskReply) e
 	return nil
 }
 
-//
 // an example RPC handler.
 //
 // the RPC argument and reply types are defined in rpc.go.
-//
 func (c *Coordinator) Example(args *ExampleArgs, reply *ExampleReply) error {
 	reply.Y = args.X + 1
 	return nil
 }
 
-
-//
 // start a thread that listens for RPCs from worker.go
-//
 func (c *Coordinator) server() {
 	rpc.Register(c)
 	rpc.HandleHTTP()
@@ -186,10 +183,8 @@ func (c *Coordinator) server() {
 	go http.Serve(l, nil)
 }
 
-//
 // main/mrcoordinator.go calls Done() periodically to find out
 // if the entire job has finished.
-//
 func (c *Coordinator) Done() bool {
 	// fmt.Printf("Done Check!!!\n")
 	now := time.Now().Unix()
@@ -200,7 +195,7 @@ func (c *Coordinator) Done() bool {
 			continue
 		}
 		// fmt.Printf("Server %d lastHeartbeat %d now %d\n", server.serverID, server.lastHeartbeat, now)
-		if server.lastHeartbeat < now - 5 {
+		if server.lastHeartbeat < now-5 {
 			// fmt.Printf("Server %d is faulty current status %d \n", server.serverID, server.status)
 			if server.status == WithTask {
 				// fmt.Printf("Task %d of type %d belongs server %d\n", server.taskID, server.taskType, c.mapTasks[server.taskID].serverID)
@@ -238,11 +233,9 @@ func (c *Coordinator) Done() bool {
 	return ret
 }
 
-//
 // create a Coordinator.
 // main/mrcoordinator.go calls this function.
 // nReduce is the number of reduce tasks to use.
-//
 func MakeCoordinator(files []string, nReduce int) *Coordinator {
 	c := Coordinator{}
 	// Your code here.
