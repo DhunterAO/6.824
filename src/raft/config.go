@@ -439,6 +439,7 @@ func (cfg *config) checkOneLeader() int {
 
 		lastTermWithLeader := -1
 		for term, leaders := range leaders {
+			cfg.t.Logf("term %d has %d leaders", term, len(leaders))
 			if len(leaders) > 1 {
 				cfg.t.Fatalf("term %d has %d (>1) leaders", term, len(leaders))
 			}
@@ -446,6 +447,7 @@ func (cfg *config) checkOneLeader() int {
 				lastTermWithLeader = term
 			}
 		}
+		cfg.t.Logf("leader len %d", len(leaders))
 
 		if len(leaders) != 0 {
 			return leaders[lastTermWithLeader][0]

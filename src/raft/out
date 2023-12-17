@@ -1,0 +1,610 @@
+Test (2A): initial election ...
+1 LastHeatbeat 0 - 1702843412036
+Starting election: from 1 term 1 at 0
+Sending RequestVote from 1 to 0
+Receive RequestVote from 1 to 0
+true Vote from 0 to 1 granted true
+Sending RequestVote from 1 to 2
+Receive RequestVote from 1 to 2
+true Vote from 2 to 1 granted true
+Total votes: 3
+Elected leader: 1
+0 LastHeatbeat 1702843412037 - 1702843412079
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+0 LastHeatbeat 1702843412182 - 1702843412195
+2 LastHeatbeat 1702843412182 - 1702843412212
+1 LastHeatbeat 1702843412182 - 1702843412243
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+0 LastHeatbeat 1702843412385 - 1702843412411
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+2 LastHeatbeat 1702843412486 - 1702843412517
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+0 LastHeatbeat 1702843412587 - 1702843412635
+1 LastHeatbeat 1702843412587 - 1702843412638
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+2 LastHeatbeat 1702843412688 - 1702843412774
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+1 LastHeatbeat 1702843412890 - 1702843412896
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+0 LastHeatbeat 1702843412990 - 1702843412992
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+1 LastHeatbeat 1702843413092 - 1702843413095
+2 LastHeatbeat 1702843413092 - 1702843413118
+0 LastHeatbeat 1702843413091 - 1702843413173
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+1 LastHeatbeat 1702843413294 - 1702843413383
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+2 LastHeatbeat 1702843413394 - 1702843413468
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+0 LastHeatbeat 1702843413495 - 1702843413567
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+1 LastHeatbeat 1702843413597 - 1702843413600
+0 LastHeatbeat 1702843413596 - 1702843413669
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+0 LastHeatbeat 1702843413697 - 1702843413797
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+2 LastHeatbeat 1702843413798 - 1702843413822
+1 LastHeatbeat 1702843413798 - 1702843413866
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+2 LastHeatbeat 1702843413899 - 1702843413928
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+1 LastHeatbeat 1702843414102 - 1702843414115
+0 LastHeatbeat 1702843414102 - 1702843414149
+2 LastHeatbeat 1702843414102 - 1702843414168
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+0 LastHeatbeat 1702843414203 - 1702843414258
+2 LastHeatbeat 1702843414203 - 1702843414293
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+1 LastHeatbeat 1702843414304 - 1702843414405
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+2 LastHeatbeat 1702843414506 - 1702843414570
+0 LastHeatbeat 1702843414506 - 1702843414575
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+1 LastHeatbeat 1702843414607 - 1702843414634
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+Receive AppendEntries from 1 to 0
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+Receive AppendEntries from 1 to 2
+2 LastHeatbeat 1702843414809 - 1702843414819
+  ... Passed --   3.0  3   58   12522    0
+Test (2A): election after network failure ...
+0 LastHeatbeat 1702843414809 - 1702843414934
+2 LastHeatbeat 0 - 1702843414998
+Starting election: from 2 term 1 at 0
+Sending RequestVote from 2 to 0
+Receive RequestVote from 2 to 0
+true Vote from 0 to 2 granted true
+Sending RequestVote from 2 to 1
+Receive RequestVote from 2 to 1
+true Vote from 1 to 2 granted true
+Total votes: 3
+Elected leader: 2
+0 LastHeatbeat 1702843414999 - 1702843415023
+1 LastHeatbeat 1702843414809 - 1702843415032
+Heartbeat from 2 to 0
+Sending AppendEntries from 2 to 0
+Receive AppendEntries from 2 to 0
+Heartbeat from 2 to 1
+Sending AppendEntries from 2 to 1
+Receive AppendEntries from 2 to 1
+Heartbeat from 2 to 0
+Sending AppendEntries from 2 to 0
+Receive AppendEntries from 2 to 0
+Heartbeat from 2 to 1
+Sending AppendEntries from 2 to 1
+Receive AppendEntries from 2 to 1
+2 LastHeatbeat 1702843414809 - 1702843415211
+1 LastHeatbeat 1702843415200 - 1702843415293
+Heartbeat from 2 to 0
+Sending AppendEntries from 2 to 0
+Receive AppendEntries from 2 to 0
+Heartbeat from 2 to 1
+Sending AppendEntries from 2 to 1
+Receive AppendEntries from 2 to 1
+2 LastHeatbeat 1702843415301 - 1702843415372
+Heartbeat from 2 to 0
+Sending AppendEntries from 2 to 0
+Receive AppendEntries from 2 to 0
+Heartbeat from 2 to 1
+Sending AppendEntries from 2 to 1
+Receive AppendEntries from 2 to 1
+0 LastHeatbeat 1702843415402 - 1702843415406
+1 LastHeatbeat 1702843415402 - 1702843415446
+Heartbeat from 2 to 0
+Sending AppendEntries from 2 to 0
+2 LastHeatbeat 1702843415402 - 1702843415647
+1 LastHeatbeat 1702843415402 - 1702843415705
+0 LastHeatbeat 1702843415402 - 1702843415753
+0 LastHeatbeat 1702843415402 - 1702843415898
+1 LastHeatbeat 1702843415402 - 1702843415928
+2 LastHeatbeat 1702843415402 - 1702843415933
+0 LastHeatbeat 1702843415402 - 1702843416022
+2 LastHeatbeat 1702843415402 - 1702843416043
+0 LastHeatbeat 1702843415402 - 1702843416180
+1 LastHeatbeat 1702843415402 - 1702843416277
+2 LastHeatbeat 1702843415402 - 1702843416434
+Starting election: from 2 term 2 at 0
+Sending RequestVote from 2 to 0
+0 LastHeatbeat 1702843415402 - 1702843416462
+Starting election: from 0 term 2 at 0
+Sending RequestVote from 0 to 1
+Receive RequestVote from 0 to 1
+true Vote from 1 to 0 granted true
+Sending RequestVote from 0 to 2
+1 LastHeatbeat 1702843416462 - 1702843416558
+1 LastHeatbeat 1702843416462 - 1702843416896
+Heartbeat from 2 to 1
+Sending AppendEntries from 2 to 1
+1 LastHeatbeat 1702843416462 - 1702843417150
+1 LastHeatbeat 1702843416462 - 1702843417410
+1 LastHeatbeat 1702843416462 - 1702843417592
+Starting election: from 1 term 3 at 0
+Sending RequestVote from 1 to 0
+Receive RequestVote from 1 to 0
+true Vote from 0 to 1 granted true
+Sending RequestVote from 1 to 2
+false Vote from 2 to 0 granted false
+Total votes: 2
+Elected leader: 0
+Heartbeat from 0 to 1
+Sending AppendEntries from 0 to 1
+Receive AppendEntries from 0 to 1
+Heartbeat from 0 to 2
+Sending AppendEntries from 0 to 2
+0 LastHeatbeat 1702843417593 - 1702843420071
+Starting election: from 0 term 4 at 0
+Sending RequestVote from 0 to 1
+Receive RequestVote from 0 to 1
+true Vote from 1 to 0 granted true
+Sending RequestVote from 0 to 2
+Receive RequestVote from 0 to 2
+true Vote from 2 to 0 granted true
+Total votes: 3
+Elected leader: 0
+0 LastHeatbeat 1702843420071 - 1702843420218
+0 LastHeatbeat 1702843420071 - 1702843420590
+0 LastHeatbeat 1702843420071 - 1702843420833
+0 LastHeatbeat 1702843420071 - 1702843421208
+Starting election: from 0 term 5 at 0
+Sending RequestVote from 0 to 1
+false Vote from 2 to 1 granted false
+Total votes: 2
+Elected leader: 1
+Heartbeat from 1 to 0
+Sending AppendEntries from 1 to 0
+1 LastHeatbeat 1702843420071 - 1702843421571
+Starting election: from 1 term 5 at 0
+Sending RequestVote from 1 to 0
+false Vote from 0 to 2 granted false
+Sending RequestVote from 2 to 1
+Heartbeat from 1 to 2
+Sending AppendEntries from 1 to 2
+false Vote from 1 to 2 granted false
+Total votes: 1
+2 LastHeatbeat 1702843421588 - 1702843424158
+Starting election: from 2 term 5 at 0
+Sending RequestVote from 2 to 0
+false Vote from 1 to 0 granted false
+Sending RequestVote from 0 to 2
+false Vote from 0 to 1 granted false
+Sending RequestVote from 1 to 2
+Receive RequestVote from 1 to 2
+true Vote from 2 to 1 granted false
+Total votes: 1
+1 LastHeatbeat 1702843425970 - 1702843426225
+1 LastHeatbeat 1702843425970 - 1702843426337
+1 LastHeatbeat 1702843425970 - 1702843426608
+1 LastHeatbeat 1702843425970 - 1702843426918
+1 LastHeatbeat 1702843425970 - 1702843427180
+Starting election: from 1 term 6 at 0
+Sending RequestVote from 1 to 0
+--- FAIL: TestReElection2A (12.59s)
+    config.go:442: term 1 has 1 leaders
+    config.go:450: leader len 1
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:442: term 3 has 1 leaders
+    config.go:450: leader len 1
+    config.go:442: term 4 has 1 leaders
+    config.go:450: leader len 1
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:456: expected one leader, got none
+Test (2A): multiple elections ...
+6 LastHeatbeat 0 - 1702843427607
+Starting election: from 6 term 1 at 0
+Sending RequestVote from 6 to 0
+0 LastHeatbeat 0 - 1702843427607
+Starting election: from 0 term 1 at 0
+Sending RequestVote from 0 to 1
+Receive RequestVote from 6 to 0
+Receive RequestVote from 0 to 1
+true Vote from 0 to 6 granted false
+Sending RequestVote from 6 to 1
+true Vote from 1 to 0 granted true
+Sending RequestVote from 0 to 2
+Receive RequestVote from 0 to 2
+Receive RequestVote from 6 to 1
+true Vote from 2 to 0 granted true
+Sending RequestVote from 0 to 3
+true Vote from 1 to 6 granted false
+Sending RequestVote from 6 to 2
+Receive RequestVote from 0 to 3
+Receive RequestVote from 6 to 2
+true Vote from 2 to 6 granted false
+Sending RequestVote from 6 to 3
+true Vote from 3 to 0 granted true
+Sending RequestVote from 0 to 4
+Receive RequestVote from 6 to 3
+Receive RequestVote from 0 to 4
+true Vote from 3 to 6 granted false
+Sending RequestVote from 6 to 4
+true Vote from 4 to 0 granted true
+Sending RequestVote from 0 to 5
+Receive RequestVote from 6 to 4
+true Vote from 4 to 6 granted false
+Sending RequestVote from 6 to 5
+Receive RequestVote from 0 to 5
+true Vote from 5 to 0 granted true
+Sending RequestVote from 0 to 6
+Receive RequestVote from 6 to 5
+true Vote from 5 to 6 granted false
+Total votes: 1
+Receive RequestVote from 0 to 6
+true Vote from 6 to 0 granted false
+Total votes: 6
+Elected leader: 0
+1 LastHeatbeat 1702843427607 - 1702843427640
+5 LastHeatbeat 1702843427608 - 1702843427684
+Heartbeat from 0 to 1
+Sending AppendEntries from 0 to 1
+Receive AppendEntries from 0 to 1
+Heartbeat from 0 to 2
+Sending AppendEntries from 0 to 2
+Receive AppendEntries from 0 to 2
+Heartbeat from 0 to 3
+Sending AppendEntries from 0 to 3
+Receive AppendEntries from 0 to 3
+Heartbeat from 0 to 4
+Sending AppendEntries from 0 to 4
+Receive AppendEntries from 0 to 4
+Heartbeat from 0 to 5
+Sending AppendEntries from 0 to 5
+Receive AppendEntries from 0 to 5
+Heartbeat from 0 to 6
+Sending AppendEntries from 0 to 6
+Receive AppendEntries from 0 to 6
+2 LastHeatbeat 1702843427689 - 1702843427740
+3 LastHeatbeat 1702843427689 - 1702843427788
+0 LastHeatbeat 1702843427690 - 1702843427789
+Heartbeat from 0 to 1
+Sending AppendEntries from 0 to 1
+Receive AppendEntries from 0 to 1
+Heartbeat from 0 to 2
+Sending AppendEntries from 0 to 2
+Receive AppendEntries from 0 to 2
+Heartbeat from 0 to 3
+Sending AppendEntries from 0 to 3
+Receive AppendEntries from 0 to 3
+Heartbeat from 0 to 4
+Sending AppendEntries from 0 to 4
+Receive AppendEntries from 0 to 4
+Heartbeat from 0 to 5
+Sending AppendEntries from 0 to 5
+Receive AppendEntries from 0 to 5
+Heartbeat from 0 to 6
+Sending AppendEntries from 0 to 6
+Receive AppendEntries from 0 to 6
+4 LastHeatbeat 1702843427792 - 1702843427876
+1 LastHeatbeat 1702843427791 - 1702843427880
+5 LastHeatbeat 1702843427792 - 1702843427885
+Heartbeat from 0 to 1
+Sending AppendEntries from 0 to 1
+Receive AppendEntries from 0 to 1
+Heartbeat from 0 to 2
+Sending AppendEntries from 0 to 2
+Receive AppendEntries from 0 to 2
+Heartbeat from 0 to 3
+Sending AppendEntries from 0 to 3
+Receive AppendEntries from 0 to 3
+Heartbeat from 0 to 4
+Sending AppendEntries from 0 to 4
+Receive AppendEntries from 0 to 4
+Heartbeat from 0 to 5
+Sending AppendEntries from 0 to 5
+Receive AppendEntries from 0 to 5
+Heartbeat from 0 to 6
+Sending AppendEntries from 0 to 6
+Receive AppendEntries from 0 to 6
+6 LastHeatbeat 1702843427895 - 1702843427930
+Heartbeat from 0 to 1
+Sending AppendEntries from 0 to 1
+Receive AppendEntries from 0 to 1
+Heartbeat from 0 to 2
+Sending AppendEntries from 0 to 2
+Receive AppendEntries from 0 to 2
+Heartbeat from 0 to 3
+Sending AppendEntries from 0 to 3
+Receive AppendEntries from 0 to 3
+Heartbeat from 0 to 4
+Sending AppendEntries from 0 to 4
+Receive AppendEntries from 0 to 4
+Heartbeat from 0 to 5
+Sending AppendEntries from 0 to 5
+Receive AppendEntries from 0 to 5
+Heartbeat from 0 to 6
+Sending AppendEntries from 0 to 6
+Receive AppendEntries from 0 to 6
+5 LastHeatbeat 1702843427997 - 1702843428005
+2 LastHeatbeat 1702843427996 - 1702843428066
+Heartbeat from 0 to 1
+Sending AppendEntries from 0 to 1
+Receive AppendEntries from 0 to 1
+Heartbeat from 0 to 2
+Sending AppendEntries from 0 to 2
+1 LastHeatbeat 1702843428098 - 1702843428110
+0 LastHeatbeat 1702843427997 - 1702843428125
+4 LastHeatbeat 1702843427997 - 1702843428140
+3 LastHeatbeat 1702843427996 - 1702843428179
+2 LastHeatbeat 1702843427996 - 1702843428184
+6 LastHeatbeat 1702843427997 - 1702843428284
+0 LastHeatbeat 1702843427997 - 1702843428307
+5 LastHeatbeat 1702843427997 - 1702843428318
+1 LastHeatbeat 1702843428098 - 1702843428321
+2 LastHeatbeat 1702843427996 - 1702843428438
+4 LastHeatbeat 1702843427997 - 1702843428442
+3 LastHeatbeat 1702843427996 - 1702843428466
+1 LastHeatbeat 1702843428098 - 1702843428590
+2 LastHeatbeat 1702843427996 - 1702843428631
+5 LastHeatbeat 1702843427997 - 1702843428640
+0 LastHeatbeat 1702843427997 - 1702843428641
+6 LastHeatbeat 1702843427997 - 1702843428682
+3 LastHeatbeat 1702843427996 - 1702843428726
+1 LastHeatbeat 1702843428098 - 1702843428779
+4 LastHeatbeat 1702843427997 - 1702843428822
+2 LastHeatbeat 1702843427996 - 1702843428847
+0 LastHeatbeat 1702843427997 - 1702843428896
+5 LastHeatbeat 1702843427997 - 1702843428904
+1 LastHeatbeat 1702843428098 - 1702843428931
+false Vote from 0 to 1 granted false
+Sending RequestVote from 1 to 2
+false Vote from 2 to 1 granted false
+Total votes: 1
+4 LastHeatbeat 1702843427997 - 1702843428978
+0 LastHeatbeat 1702843427997 - 1702843429002
+Starting election: from 0 term 2 at 0
+Sending RequestVote from 0 to 1
+6 LastHeatbeat 1702843427997 - 1702843429044
+Starting election: from 6 term 2 at 0
+Sending RequestVote from 6 to 0
+3 LastHeatbeat 1702843427996 - 1702843429089
+Starting election: from 3 term 2 at 0
+Sending RequestVote from 3 to 0
+4 LastHeatbeat 1702843427997 - 1702843429096
+Starting election: from 4 term 2 at 0
+Sending RequestVote from 4 to 0
+1 LastHeatbeat 1702843428098 - 1702843429100
+Starting election: from 1 term 2 at 0
+Sending RequestVote from 1 to 0
+2 LastHeatbeat 1702843427996 - 1702843429150
+Starting election: from 2 term 2 at 0
+Sending RequestVote from 2 to 0
+5 LastHeatbeat 1702843427997 - 1702843429239
+Starting election: from 5 term 2 at 0
+Sending RequestVote from 5 to 0
+false Vote from 0 to 5 granted false
+Sending RequestVote from 5 to 1
+Receive RequestVote from 5 to 1
+true Vote from 1 to 5 granted false
+Sending RequestVote from 5 to 2
+false Vote from 0 to 1 granted false
+Sending RequestVote from 1 to 2
+false Vote from 0 to 4 granted false
+Sending RequestVote from 4 to 1
+Receive RequestVote from 4 to 1
+true Vote from 1 to 4 granted false
+Sending RequestVote from 4 to 2
+false Vote from 0 to 2 granted false
+Sending RequestVote from 2 to 1
+false Vote from 1 to 2 granted false
+Total votes: 1
+false Vote from 0 to 3 granted false
+Sending RequestVote from 3 to 1
+false Vote from 2 to 0 granted false
+Total votes: 1
+Heartbeat from 0 to 3
+Sending AppendEntries from 0 to 3
+Heartbeat from 0 to 4
+Sending AppendEntries from 0 to 4
+false Vote from 0 to 6 granted false
+Sending RequestVote from 6 to 1
+Receive RequestVote from 6 to 1
+true Vote from 1 to 6 granted false
+Sending RequestVote from 6 to 2
+false Vote from 2 to 6 granted false
+Sending RequestVote from 6 to 3
+false Vote from 0 to 2 granted false
+Sending RequestVote from 2 to 1
+false Vote from 2 to 5 granted false
+Sending RequestVote from 5 to 3
+false Vote from 2 to 4 granted false
+Sending RequestVote from 4 to 3
+--- FAIL: TestManyElections2A (6.43s)
+    config.go:442: term 1 has 1 leaders
+    config.go:450: leader len 1
+    config.go:442: term 1 has 1 leaders
+    config.go:450: leader len 1
+    config.go:442: term 1 has 1 leaders
+    config.go:450: leader len 1
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:450: leader len 0
+    config.go:456: expected one leader, got none
+FAIL
+exit status 1
+FAIL	6.5840/raft	22.046s

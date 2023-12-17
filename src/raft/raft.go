@@ -24,7 +24,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"fmt"
+	"fmt" 
 
 	//	"6.5840/labgob"
 	"6.5840/labrpc"
@@ -91,11 +91,12 @@ func (rf *Raft) GetState() (int, bool) {
 	defer rf.mu.Unlock()
 
 	term = rf.currentTerm
-	if rf.state == 1 {
+	if rf.state == LEADER {
 		isleader = true
 	} else {
 		isleader = false
 	}
+	
 	return term, isleader
 }
 
@@ -170,16 +171,19 @@ type RequestVoteReply struct {
 // example RequestVote RPC handler.
 func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	// Your code here (2A, 2B).
+
+	fmt.Printf("Receive RequestVote from %v to %v\n", args.CandidateId, rf.me)
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
-	fmt.Printf("Receive RequestVote from %v to %v\n", args.CandidateId, rf.me)
 
 	if args.Term > rf.currentTerm {
+		reply.VoteGranted = true
+		reply.Term = rf.currentTerm
+
 		rf.currentTerm = args.Term
 		rf.state = FOLLOWER
 		rf.votedFor = args.CandidateId
-		reply.VoteGranted = true
-		reply.Term = rf.currentTerm
+		rf.lastHeartbeat = time.Now().UnixMilli()
 		return
 	}
 
@@ -192,6 +196,7 @@ func (rf *Raft) RequestVote(args *RequestVoteArgs, reply *RequestVoteReply) {
 	if rf.votedFor == -1 || (rf.votedFor == args.CandidateId && args.LastLogIndex >= rf.commitIndex) {
 		reply.VoteGranted = true
 		rf.votedFor = args.CandidateId
+		rf.lastHeartbeat = time.Now().UnixMilli()
 		return
 	}
 
@@ -252,16 +257,21 @@ func (rf *Raft) AppendEntries(args *AppendEntriesArgs, reply *AppendEntriesReply
 	rf.mu.Lock()
 	defer rf.mu.Unlock()
 
+	fmt.Printf("Receive AppendEntries from %v to %v\n", args.LeaderId, rf.me)
+
+	if args.Term < rf.currentTerm {
+		reply.Success = false
+		return
+	}
+
 	reply.Term = rf.currentTerm
 	reply.Success = true
-
-	if args.LeaderId == rf.votedFor {
-		rf.lastHeartbeat = time.Now().UnixMilli()
-	}
+	rf.lastHeartbeat = time.Now().UnixMilli()
 	return
 }
 
 func (rf *Raft) sendAppendEntries(server int, args *AppendEntriesArgs, reply *AppendEntriesReply) bool {
+	fmt.Printf("Sending AppendEntries from %v to %v\n", rf.me, server)
 	ok := rf.peers[server].Call("Raft.AppendEntries", args, reply)
 	return ok
 }
@@ -311,12 +321,11 @@ func (rf *Raft) killed() bool {
 func (rf *Raft) heartbeat() {
 	for rf.killed() == false {
 		rf.mu.Lock()
-		defer rf.mu.Unlock()
 		
 		if rf.state == LEADER {
-			rf.lastHeartbeat = time.Now().UnixMilli()
 			for i := 0; i < len(rf.peers); i++ {
 				if i != rf.me {
+					fmt.Printf("Heartbeat from %v to %v\n", rf.me, i)
 					args := AppendEntriesArgs{
 						Term:         rf.currentTerm,
 						LeaderId:     rf.me,
@@ -326,30 +335,40 @@ func (rf *Raft) heartbeat() {
 						LeaderCommit: rf.commitIndex,
 					}
 					var reply AppendEntriesReply
+
+					rf.mu.Unlock()
 					if ok := rf.sendAppendEntries(i, &args, &reply); ok {
-						fmt.Printf("Heartbeat from %v to %v\n", rf.me, i)
+						// fmt.Printf("Heartbeat from %v to %v\n", rf.me, i)
 					}
+					rf.mu.Lock()
 				}
 			}
+			rf.lastHeartbeat = time.Now().UnixMilli()
 		}
+		rf.mu.Unlock()
+		time.Sleep(time.Duration(100) * time.Millisecond)
 	}
 }
 
 func (rf *Raft) ticker() {
 	for rf.killed() == false {
 
+		// pause for a random amount of time between 50 and 350
+		// milliseconds.
+		ms := 100 + (rand.Int63() % 300)
+		time.Sleep(time.Duration(ms) * time.Millisecond)
+
 		// Your code here (2A)
 		rf.mu.Lock()
-		defer rf.mu.Unlock()
 
 		// Check if a leader election should be started.
-		if rf.lastHeartbeat == 0 || time.Now().UnixMilli() - rf.lastHeartbeat > rand.Int63() % 500 + 1000 {
-			fmt.Printf("Starting election: from %v\n", rf.me)
-			rf.lastHeartbeat = time.Now().UnixMilli()
-
+		fmt.Printf("%v LastHeatbeat %v - %v\n", rf.me, rf.lastHeartbeat, time.Now().UnixMilli())
+		if rf.lastHeartbeat == 0 || time.Now().UnixMilli() - rf.lastHeartbeat > 1000 {
+			// fmt.Printf("Starting election: from %v term %v\n", rf.me, rf.currentTerm)
 			rf.currentTerm++
 			rf.state = CANDIDATE
 			rf.votedFor = rf.me
+			fmt.Printf("Starting election: from %v term %v at %v\n", rf.me, rf.currentTerm, rf.state)
 
 			for i := 0; i < len(rf.peers); i++ {
 				args := RequestVoteArgs{
@@ -360,8 +379,13 @@ func (rf *Raft) ticker() {
 				if i != rf.me {
 					fmt.Printf("Sending RequestVote from %v to %v\n", rf.me, i)
 					rf.votedPeers[i] = false
+
+					rf.lastHeartbeat = time.Now().UnixMilli()
+					rf.mu.Unlock()
 					ok := rf.sendRequestVote(i, &args, &reply); 
-					fmt.Println("Vote granted: ", reply.VoteGranted)
+					fmt.Printf("%v Vote from %v to %v granted %v\n", ok, i, rf.me, reply.VoteGranted)
+					rf.mu.Lock()
+
 					if ok {
 						if reply.VoteGranted {
 							rf.votedPeers[i] = true
@@ -369,21 +393,19 @@ func (rf *Raft) ticker() {
 					}
 				}
 			}
-			totalVotes := 0
+			totalVotes := 1
 			for i := 0; i < len(rf.peers); i++ {
 				if rf.votedPeers[i] == true {
 					totalVotes++
 				}
 			}
+			fmt.Printf("Total votes: %v\n", totalVotes)
 			if totalVotes > len(rf.peers) / 2 {
+				fmt.Printf("Elected leader: %v\n", rf.me)
 				rf.state = LEADER
 			}
 		}
-
-		// pause for a random amount of time between 50 and 350
-		// milliseconds.
-		ms := 50 + (rand.Int63() % 300)
-		time.Sleep(time.Duration(ms) * time.Millisecond)
+		rf.mu.Unlock()
 	}
 }
 
@@ -415,6 +437,7 @@ func Make(peers []*labrpc.ClientEnd, me int,
 	// start ticker goroutine to start elections
 	go rf.ticker()
 
+	go rf.heartbeat()
 
 	return rf
 }
